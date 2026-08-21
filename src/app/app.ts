@@ -1,11 +1,22 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
+import { CreateTodoComponent } from './features/create-todo/create-todo.component';
+import { TodoListComponent } from './features/todo-list/todo-list.component';
+import { Todo } from './features/models/todo.model';
 
 @Component({
   selector: 'app-root',
-  imports: [],
+  standalone: true,
+  imports: [CreateTodoComponent, TodoListComponent],
   templateUrl: './app.html',
-  styleUrl: './app.scss',
+  styleUrls: ['./app.scss']
 })
 export class App {
-  protected readonly title = signal('todo');
+  title = 'todo';
+  newlyCreatedTask: Todo | null = null;
+
+  onTaskCreated(task: Todo) {
+ 
+    this.newlyCreatedTask = { ...task };
+  }
 }
+

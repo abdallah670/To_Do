@@ -39,7 +39,6 @@
       >
         <div class="card-body d-flex align-items-center p-3">
           
-          <!-- Complete Status Icon (Left side) -->
           <div class="task-status-icon me-3">
             @if (task.is_completed) {
               <i class="bi bi-check-circle-fill text-success fs-4"></i>
@@ -48,7 +47,6 @@
             }
           </div>
 
-          <!-- Task Details -->
           <div class="flex-grow-1 min-w-0">
             @if (editingTaskId === task.id) {
               <div class="d-flex flex-column gap-2 mb-1 pe-2">
@@ -65,7 +63,6 @@
             }
           </div>
 
-          <!-- Task Metadata (Date) -->
           @if (editingTaskId === task.id) {
             <div class="task-date ms-2">
               <input type="datetime-local" class="form-control form-control-sm text-muted" [(ngModel)]="editForm.due_at">
@@ -79,10 +76,8 @@
             </div>
           }
 
-          <!-- Actions -->
           <div class="task-actions ms-4 d-flex gap-2">
             @if (editingTaskId === task.id) {
-              <!-- Save Button -->
               <button 
                 class="btn btn-action btn-success-subtle" 
                 (click)="saveEdit(task)" 
@@ -96,7 +91,6 @@
                  }
               </button>
               
-              <!-- Cancel Button -->
               <button 
                 class="btn btn-action btn-secondary-subtle" 
                 (click)="cancelEdit()" 
@@ -106,7 +100,6 @@
                 <i class="bi bi-x-lg text-muted"></i>
               </button>
             } @else {
-              <!-- Edit Button -->
               <button 
                 class="btn btn-action btn-primary-subtle"
                 [disabled]="task.is_completed"
@@ -116,7 +109,6 @@
                 <i class="bi bi-pencil text-primary"></i>
               </button>
 
-              <!-- Complete Button -->
               <button 
                 class="btn btn-action btn-complete" 
                 [class.btn-success-subtle]="!task.is_completed"
@@ -132,7 +124,6 @@
                 }
               </button>
               
-              <!-- Delete Button -->
               <button 
                 class="btn btn-action btn-danger-subtle"
                 [disabled]="deletingTasks.has(task.id)"

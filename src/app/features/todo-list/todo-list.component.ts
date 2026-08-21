@@ -16,12 +16,10 @@ export class TodoListComponent implements OnInit, OnChanges {
 
   @Input() newTask: Todo | null = null;
 
-  // Local state signals
   todos = signal<Todo[]>([]);
   isLoading = signal<boolean>(false);
   error = signal<string | null>(null);
 
-  // Track operations
   completingTasks = new Set<number>();
   deletingTasks = new Set<number>();
   updatingTasks = new Set<number>();
@@ -33,7 +31,6 @@ export class TodoListComponent implements OnInit, OnChanges {
     this.isLoading.set(true);
     this.todoService.getTodos().subscribe({
       next: (data) => {
-        // Guard: ensure we always set an array
         const list = Array.isArray(data) ? data : [];
         this.todos.set(list);
         this.isLoading.set(false);
@@ -47,10 +44,8 @@ export class TodoListComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     const change = changes['newTask'];
-    // Only run after initial change (not on first undefined input)
     if (change && !change.firstChange && change.currentValue) {
       const addedTask = change.currentValue as Todo;
-      // Guard: don't add duplicates
       const alreadyExists = this.todos().some(t => t.id === addedTask.id);
       if (!alreadyExists) {
         this.todos.update(current => [addedTask, ...current]);
@@ -64,7 +59,6 @@ export class TodoListComponent implements OnInit, OnChanges {
     if (task.due_at) {
       const d = new Date(task.due_at);
       if (!isNaN(d.getTime())) {
-        // adjust to local time for input
         d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
         formattedDate = d.toISOString().slice(0, 16);
       }
@@ -157,7 +151,6 @@ export class TodoListComponent implements OnInit, OnChanges {
   }
 
   private showToast(message: string) {
-    // Simple custom toast implementation
     const toastContainer = document.getElementById('toast-container');
     if (toastContainer) {
       const toast = document.createElement('div');
@@ -175,7 +168,6 @@ export class TodoListComponent implements OnInit, OnChanges {
       `;
       toastContainer.appendChild(toast);
       
-      // Setup close button
       const closeBtn = toast.querySelector('.btn-close');
       if (closeBtn) {
          closeBtn.addEventListener('click', () => {

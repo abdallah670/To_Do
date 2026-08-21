@@ -29,7 +29,7 @@
     .input-group-text, .form-control {
       border-color: var(--primary-color);
       border-width: 2px;
-      margin: -1px; /* prevent layout shift on border width change */
+      margin: -1px;
     }
   }
 
