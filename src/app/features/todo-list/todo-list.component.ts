@@ -27,6 +27,10 @@ export class TodoListComponent implements OnInit, OnChanges {
   editingTaskId: number | null = null;
   editForm: Partial<Todo> = {};
 
+  showDeleteConfirm = signal(false);
+  pendingDeleteId = signal<number | null>(null);
+  isDeleting = signal(false);
+
   ngOnInit() {
     this.isLoading.set(true);
     this.todoService.getTodos().subscribe({
@@ -124,19 +128,39 @@ export class TodoListComponent implements OnInit, OnChanges {
   }
 
   deleteTask(id: number) {
-    if (confirm('Are you sure you want to delete this task?')) {
-      this.deletingTasks.add(id);
-      this.todoService.deleteTodo(id).subscribe({
-        next: () => {
-          this.todos.update(current => current.filter(t => t.id !== id));
-          this.deletingTasks.delete(id);
-          this.showToast('Task deleted successfully');
-        },
-        error: () => {
-          this.deletingTasks.delete(id);
-        }
-      });
-    }
+    this.pendingDeleteId.set(id);
+    this.showDeleteConfirm.set(true);
+  }
+
+  confirmDelete() {
+    const id = this.pendingDeleteId();
+    if (id === null) return;
+
+    this.isDeleting.set(true);
+    this.deletingTasks.add(id);
+    this.todoService.deleteTodo(id).subscribe({
+      next: () => {
+        this.todos.update(current => current.filter(t => t.id !== id));
+        this.deletingTasks.delete(id);
+        this.closeDeleteConfirm();
+        this.isDeleting.set(false);
+        this.showToast('Task deleted successfully');
+      },
+      error: () => {
+        this.deletingTasks.delete(id);
+        this.isDeleting.set(false);
+        this.showToast('Failed to delete task. Please try again.');
+      }
+    });
+  }
+
+  cancelDelete() {
+    this.closeDeleteConfirm();
+  }
+
+  private closeDeleteConfirm() {
+    this.showDeleteConfirm.set(false);
+    this.pendingDeleteId.set(null);
   }
 
   formatDate(dateString: string): { date: string, time: string } | null {
@@ -154,7 +178,7 @@ export class TodoListComponent implements OnInit, OnChanges {
     const toastContainer = document.getElementById('toast-container');
     if (toastContainer) {
       const toast = document.createElement('div');
-      toast.className = 'toast show align-items-center text-white bg-dark border-0 mb-2';
+      toast.className = 'toast show align-items-center text-white bg-dark border-0 mt-2';
       toast.setAttribute('role', 'alert');
       toast.setAttribute('aria-live', 'assertive');
       toast.setAttribute('aria-atomic', 'true');
