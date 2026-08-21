@@ -1,0 +1,70 @@
+<div class="card mb-4 border-0 shadow-sm create-todo-card">
+  <div class="card-body p-4">
+    <h5 class="card-title mb-4 d-flex align-items-center fw-bold">
+      <i class="bi bi-plus-circle-fill text-primary me-2"></i> Create a new task
+    </h5>
+
+    <form [formGroup]="todoForm" (ngSubmit)="onSubmit()">
+      <div class="row g-3">
+        <!-- Title Field -->
+        <div class="col-md-4">
+          <label class="form-label small text-muted mb-1">Task title *</label>
+          <div class="input-group">
+            <span class="input-group-text bg-white border-end-0 text-muted">
+              <i class="bi bi-card-heading"></i>
+            </span>
+            <input 
+              type="text" 
+              class="form-control border-start-0 ps-0 shadow-none" 
+              placeholder="e.g. Buy groceries" 
+              formControlName="title"
+              [class.is-invalid]="todoForm.get('title')?.invalid && todoForm.get('title')?.touched"
+            >
+          </div>
+          <div class="invalid-feedback d-block" *ngIf="todoForm.get('title')?.invalid && todoForm.get('title')?.touched">
+            Task title is required
+          </div>
+        </div>
+
+        <!-- Description Field -->
+        <div class="col-md-4">
+          <label class="form-label small text-muted mb-1">Description (optional)</label>
+          <div class="input-group">
+            <span class="input-group-text bg-white border-end-0 text-muted">
+              <i class="bi bi-card-text"></i>
+            </span>
+            <input 
+              type="text" 
+              class="form-control border-start-0 ps-0 shadow-none" 
+              placeholder="Add more details..." 
+              formControlName="description"
+            >
+          </div>
+        </div>
+
+        <!-- Due Date Field -->
+        <div class="col-md-4">
+          <label class="form-label small text-muted mb-1">Due date (optional)</label>
+          <div class="input-group">
+            <span class="input-group-text bg-white border-end-0 text-muted">
+              <i class="bi bi-calendar-event"></i>
+            </span>
+            <input 
+              type="datetime-local" 
+              class="form-control border-start-0 ps-0 shadow-none" 
+              formControlName="due_at"
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-end mt-4">
+        <button type="submit" class="btn btn-primary rounded-3 px-4 d-flex align-items-center" [disabled]="isLoading()">
+          <span *ngIf="isLoading()" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+          <i *ngIf="!isLoading()" class="bi bi-plus-lg me-2"></i>
+          {{ isLoading() ? 'Adding...' : 'Add Task' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
