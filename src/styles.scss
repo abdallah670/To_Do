@@ -1,1 +1,50 @@
 /* You can add global styles to this file, and also import other style files */
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+
+:root {
+  --primary-color: #5d3fd3; 
+  --primary-hover: #4b32b3;
+  --bg-color: #f7f9fc;
+  --card-bg: #ffffff;
+  --text-main: #333333;
+  --text-muted: #6b7280;
+  --success-color: #22c55e;
+  --danger-color: #ef4444;
+  --border-color: #e5e7eb;
+}
+
+body {
+  background-color: var(--bg-color);
+  font-family: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  color: var(--text-main);
+  -webkit-font-smoothing: antialiased;
+}
+
+.card {
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  background-color: var(--card-bg);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  margin-bottom: 1rem;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+  border-color: var(--primary-hover);
+}
+
+.form-control {
+  border-radius: 8px;
+  border-color: var(--border-color);
+}
+
+.form-control:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.25rem rgba(93, 63, 211, 0.25);
+}
